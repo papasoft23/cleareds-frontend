@@ -1,0 +1,23 @@
+---
+import { contentfulClient } from "../../../lib/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { Document } from "@contentful/rich-text-types";
+
+interface Banner {
+    title: string
+}
+
+const entries = await contentfulClient.getEntries<Page>({
+  content_type: "page",
+});
+
+console.log(entries.items);
+---
+<body>
+  {entries.items.map((item) => (
+    <section>
+      <h2>{item.fields.title}</h2>
+      <article set:html={documentToHtmlString(item.fields.content)}></article>
+    </section>
+  ))}
+</body>
